@@ -1,0 +1,569 @@
+// homework 4
+
+#include <iostream> // ввод вывод
+#include <clocale> // для русс
+#include <Windows.h>
+#include <cmath> 
+#include <stdlib.h>
+#include <math.h>
+#include <string> // строки + гетлайн
+#include <fstream> // ввод вывод файлов
+#include <sstream>
+#include <algorithm> // для сортировки
+
+// #include <SFML/Graphics.hpp>
+#define M_PI 3.141592653589793238460
+using namespace std;
+void n1()
+{
+	int i = 0;// количество цифр
+	double d = 0;
+
+	ofstream file("text.txt"); // создаем файл (запись)
+	while (i != 10) // записываем в него 10 чисел
+	{
+		i += 1;
+		cout << i << " число: ";
+		if (cin >> d) // проверка на число 
+		{
+			file << d << '\n';
+		}
+		else
+		{
+			cout << "Неверные значения!" << endl;
+
+		}
+
+	}
+	file.close();
+
+	double sum = 0;
+	int b = 0;
+	ifstream infile("text.txt"); // открываем файл (читаем)
+	while (b != 10)
+	{
+
+		infile >> d;
+		sum += d;
+		b += 1;
+	}
+	infile.close();
+
+	cout << "Сумма: " << sum << endl;
+
+
+}
+int sign(int x) // для 2
+{
+	if (x > 0)
+	{
+		return 1;
+	}
+
+	else if (x == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+void n2()
+{
+	int x;
+	cout << "Введите число: ";
+	cin >> x;
+	x = sign(x);
+	cout << "Вывод: x = " << x << endl;
+}
+double a, b, c, h, r, p;
+double krug(double r) // круг
+{
+	return M_PI * pow(r, 2);
+}
+double pryam(double a, double h) // прямоугольник
+{
+
+	return a * b;
+}
+double treyg(double a, double b, double c) // треугольник
+{
+	p = (a + b + c) / 2;
+	return sqrt(p * (p - a) * (p - b) * (p - c));
+}
+
+void n3()
+{
+	int number;
+	cout << "Какой фигуры вы хотите найти площадь?" << endl;
+	cout << "1 - прямоугольник" << endl;
+	cout << "2 - треугольник " << endl;
+	cout << "3 - круг" << endl;
+
+	cout << "Введите число: ";
+	cin >> number;
+	switch (number) {
+	case 1: // прямоугольник
+		cout << "Вы выбрали площадь прямоугольника. Введите следующие переменные: ";
+		cout << "a = ";
+		cin >> a;
+		cout << "b = ";
+		cin >> b;
+		if (a <= 0 || b <= 0)
+
+			cout << "Введите корректные значения!" << endl;
+		else
+			cout << "Площадь прямоугольника = " << pryam(a, b) << endl;
+
+
+	case 2: // треугольник
+		cout << "Вы выбрали площадь треугольника. Введите следующие переменные: ";
+		cout << "a = ";
+		cin >> a;
+		cout << "b = ";
+		cin >> b;
+		cout << "c = ";
+		cin >> c;
+		if (a <= 0 || b <= 0 || c <= 0 || a + b <= c || a + c <= b || b + c <= a)
+			cout << "Введите корректные значения!" << endl;
+		else
+			cout << "Площадь треугольника = " << treyg(a, b, c) << endl;
+
+	case 3: // круг
+		cout << "Вы выбрали площадь круга. Введите следующие переменные: ";
+		cout << "r = ";
+		cin >> r;
+		if (r <= 0)
+			cout << "Введите корректные значения!" << endl;
+		else
+			cout << "Площадь круга = " << krug(r) << endl;
+	}
+}
+
+void n4()
+{
+	char zvezda = '*'; // char - символьный тип данных
+	char liniya = '_';
+	for (int i = 0; i < 12; i++)
+	{
+		for (int j = 0; j < 39; j++)
+		{
+			if (i < 9 && j < 8)
+			{
+				cout << zvezda;
+			}
+			else
+			{
+				cout << liniya;
+			}
+		}
+		cout << endl;
+	}
+}
+
+void n5()
+{
+	/*int width = 80; // Ширина консоли
+	int height = 24; // Высота консоли
+	double xMin = -3.14;
+	double xMax = 3.14;
+
+	for (int y = 0; y < height; y++) {//вертикальные позиции
+		double yValue = 2.0 * y / static_cast<double>(height - 1) - 1.0;//приводим y к диапазону
+		double xStep = (xMax - xMin) / (width - 1);//шаг вычилсения между значениями x
+		for (int x = 0; x < width; x++) {
+			double xValue = xMin + x * xStep; //масштабированние x
+			double functionValue = -sin(xValue);//вычисление sinx
+
+			if (fabs(functionValue - yValue) < 0.1) {
+				cout << '*';//сам график
+			}
+			else if (x == width / 2) {
+				cout << '|'; // Вертикальная ось
+			}
+			else if (y == height / 2) {
+				cout << '-'; // Горизонтальная ось
+			}
+			else {
+				cout << ' ';
+			}
+		}
+		cout << '\n';
+	} */
+	int axis_x = 40;
+	int axis_y = 10;
+
+	for (int y = -axis_y; y <= axis_y; ++y)
+	{
+		for (float x = -axis_x; x <= axis_x; ++x)
+		{
+			if (x == 0 && y == 0)
+			{
+				cout << "+";
+			}
+			else if (x == 0)
+			{
+				cout << "|";
+			}
+			else if (y == 0)
+			{
+				cout << "-";
+			}
+			else {
+				double function_value = -sin(static_cast<double>(x) / axis_x * M_PI) * axis_y;
+				int function_integer = static_cast<int>(function_value);
+				if (function_integer == y)
+				{
+					cout << "*";
+				}
+				else
+				{
+					cout << " ";
+				}
+			}
+		}
+		cout << endl;
+	}
+}
+int arab(char x)
+{
+	switch (x)
+	{
+	case 'I':
+		return 1;
+	case 'V':
+		return 5;
+	case 'X':
+		return 10;
+	case 'L':
+		return 50;
+	case 'C':
+		return 100;
+	case 'D':
+		return 500;
+	case 'M':
+		return 1000;
+	}
+}
+
+unsigned int convert(string x) {
+	
+	int last = 0; // предыдущий символ
+	int result = 0;
+	int lenX = x.length(); // длина
+
+ 	for (int i = lenX - 1; i >= 0; --i) { 
+		int current = arab(x[i]); // текущее значение символа
+		if (current < last) { // если текущее значение меньше предыдущего то вычитаем его из результата
+			result -= current;
+		}
+		else {
+			result += current;
+		}
+
+	
+		if (i < lenX - 1) { // проверяем только если это не последний символ
+			int next = arab(x[i + 1]);
+
+			if ((current == 5 || current == 50 || current == 500) && next > current) {
+				cout << "Введите корректное значение" << endl;
+				}
+
+			if (current == 1 || current == 10 || current == 100) {
+				if (next == current * 5 || next == current * 10) {
+				
+				}
+				else if (next > current) {
+					cout << "Введите корректное значение" << endl;
+				} // Сравнить IVI = 5 --> V
+			}
+		}
+		last = current;
+	}
+	return result;
+}
+void n6()
+{
+	string x;
+	cout << "Введите x: ";
+	cin >> x;
+	cout << convert(x) << endl;
+}
+
+
+void option1for7()
+{
+	int m = 25173, i = 13849, c = 65537, Si = 0, x;
+	for (int(ii) = 0; ii <= 100; ++ii)
+	{
+		Si += 1;
+		Si = (m * Si + i) % (c);
+		cout << Si << " ";
+	}
+	cout << "\n";
+}
+
+void option2for7()
+{
+	int m = 37, i = 3, c = 64, Si = 0, x;
+	for (int b = 0; b <= 100; ++b)
+	{
+		Si += 1;
+		Si = (m * Si + i) % (c);
+		cout << Si << " ";
+	}
+	cout << "\n";
+}
+
+void n7()
+{
+	unsigned a;
+	cout << "Какой вариант выберите?\n";
+	cout << "1)m = 25173, i = 13849, c = 65537\n";
+	cout << "2)m = 37, i = 3, c = 64, Si=0\n";
+	cout << "3)Oба последовательно\n";
+	cin >> a;
+
+	switch (a)
+	{
+	case 1:
+		option1for7();
+		break;
+	case 2:
+		option2for7();
+		break;
+	case 3:
+		option1for7();
+		option2for7();
+		break;
+	default:
+		cout << "Введите КОРРЕКТНЫЕ значения " << endl;
+		return;
+
+	}
+}
+void n8()
+{
+	double matrix_1[3][4] = { {5, 2, 0, 10}, {3, 5, 2, 5}, {20, 0, 0, 0} };
+	double matrix_2[4][2] = { {1.2, 0.5}, { 2.8, 0.4 }, { 5, 1 }, { 2, 1.5 } };
+	double result[3][2];
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 2; ++j)
+		{
+			double resinput = 0;
+			for (int k = 0; k < 4; k++)
+			{
+				resinput += matrix_1[i][k] * matrix_2[k][j];
+			}
+			result[i][j] = resinput;
+		}
+	}
+
+	int max_t = 0, min_t = 0, max_s = 0, min_s = 0;
+	double summa = 0, tax = 0, ans5 = 0;
+
+	for (int i = 0; i < 3; i++)
+	{
+		summa += result[i][0];
+		tax += result[i][1];
+		ans5 = tax + summa;
+		if (result[i][0] > result[max_s][0])
+		{
+			max_s = i;
+		}
+		if (result[i][1] > result[max_t][1])
+		{
+			max_t = i;
+		}
+		if (result[i][2] < result[min_s][2])
+		{
+			min_s = i;
+		}
+		if (result[i][1] < result[min_t][1])
+		{
+			min_t = i;
+		}
+	}
+
+	unsigned number;
+	cout << "1) какой продавец выручил больше всего денег с продажи, какой – меньше\n";
+	cout << "2) какой получил наибольшие комиссионные, какой – наименьшие\n";
+	cout << "3) чему равна общая сумма денег, вырученных за проданные товары\n";
+	cout << "4) сколько всего комиссионных получили продавцы\n";
+	cout << " 5) чему равна общая сумма денег, прошедших через руки продавцов?\n";
+	cout << "Введите номер задания: ";
+	while (true)
+	{
+		cin >> number;
+		switch (number)
+		{
+		case 1:
+			cout << "Больше всего денег с продажи: " << max_s + 1 << " продавец" << "\n Меньше всего денег с продажи: " << min_s + 1 << " продавец" << "\n";
+			break;
+		case 2:
+			cout << "Получил наибольшие комиссионные:" << max_t + 1 << " продавец" << "\n Получил наименьшие комиссионные:" << min_t + 1 << "продавец" << "\n";
+			break;
+		case 3:
+			cout << "Общая сумма денег, вырученных за проданные товары:" << summa << "\n";
+			break;
+		case 4:
+			cout << "Всего комиссионных получили продавцы:" << tax << "\n";
+			break;
+		case 5:
+			cout << "Oбщая сумма денег, прошедших через руки продавцов:  " << ans5 << "\n";
+			break;
+		default:
+			cout << "Введите корректную цифру!" << endl;
+			break;
+		}
+	}
+}
+int translate_to_char(char number) {
+	switch (number) {
+	case '0': return 0; break;
+	case '1': return 1; break;
+	case '2': return 2; break;
+	case '3': return 3; break;
+	case '4': return 4; break;
+	case '5': return 5; break;
+	case '6': return 6; break;
+	case '7': return 7; break;
+	case '8': return 8; break;
+	case '9': return 9; break;
+	case 'A': return 10; break;
+	case 'B': return 11; break;
+	case 'C': return 12; break;
+	case 'D': return 13; break;
+	case 'E': return 14; break;
+	case 'F': return 15; break;
+	}
+}
+string translate_to_int(int number) {
+	switch (number) {
+	case 0: return "0"; break;
+	case 1: return "1"; break;
+	case 2: return "2"; break;
+	case 3: return "3"; break;
+	case 4: return "4"; break;
+	case 5: return "5"; break;
+	case 6: return "6"; break;
+	case 7: return "7"; break;
+	case 8: return "8"; break;
+	case 9: return "9"; break;
+	case 10: return "A"; break;
+	case 11: return "B"; break;
+	case 12: return "C"; break;
+	case 13: return "D"; break;
+	case 14: return "E"; break;
+	case 15: return "F"; break;
+	}
+}
+double tenCC(string line, int base_sys = 2) { // перевод в 10 СС
+	int new_x_in10 = 0; // полученное число в 10 СС
+
+	for (int i = 0; i < line.size(); i++) { // пробегание по всем цифрам
+		int number = translate_to_char(line[i]); // конвертированный символ в цифру
+		new_x_in10 += number * pow(base_sys, line.size() - i - 1); // запись в число цифры line I
+	}
+
+	return new_x_in10;
+}
+
+
+string needCC(int num, int base_num = 2) { // перевод в нужную СС
+	string new_x = translate_to_int(num % base_num);
+
+	if (num > 0) {
+		return needCC(num / base_num) + new_x;
+	}
+
+	return new_x;
+}
+
+void n9()
+{
+	string x;
+	int now_ss, new_ss;
+	cout << "Цифра: ";
+	cin >> x;
+	cout << "Нынешняя СС: ";
+	cin >> now_ss;
+	cout << "Новая СС: ";
+	cin >> new_ss;
+
+	int num = tenCC(x, now_ss);
+	cout << "Цифра: " << num << endl;
+	cout << "Вывод: " << needCC(num, new_ss) << endl;
+}
+
+
+
+
+
+
+
+int main()
+{
+
+	setlocale(LC_ALL, "Russian");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(handle, FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
+	unsigned number;
+	bool run = true;
+	cout << "Какое задание запустить ? \n "
+		<< "Введите число от 1 до 9, чтобы запустить скрипт: ";
+
+
+	while (run)
+	{
+
+		run = false;
+		cin >> number;
+		/* if (!std::cin >> number)
+		{
+			std::cin.clear(); // как работает читать!!!!!!!!!!!!!!!!!!!!
+		}
+		*/
+		switch (number)
+		{
+		case 1:
+			n1();
+			break;
+		case 2:
+			n2();
+			break;
+		case 3:
+			n3();
+			break;
+		case 4:
+			n4();
+			break;
+		case 5:
+			n5();
+			break;
+		case 6:
+			n6();
+			break;
+		case 7:
+			n7();
+			break;
+		case 8:
+			n8();
+			break;
+		case 9:
+			n9();
+			break;
+		default:
+			cout << "Введите корректное значение: ";
+			run = true;
+		}
+	}
+	return 0;
+}
+
