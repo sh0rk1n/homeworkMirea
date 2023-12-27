@@ -1,0 +1,424 @@
+#include <iostream> // ввод вывод
+#include <clocale> // для русс
+#include <Windows.h> // console
+#include <vector>
+#include <cmath>
+#include <fstream> // files
+#include <sstream> // string stream
+#include <algorithm> // for sort
+
+
+using namespace std;
+typedef vector<int> int_vector;
+string dict_16CC = "0123456789ABCDEF";
+
+
+int Evklid(int  a, int  b)
+{
+	if (b % a == 0)
+		return a;
+	if (a % b == 0)
+		return b;
+
+	if (a > b)
+		return Evklid(a % b, b);
+	return Evklid(a, b % a);
+}
+void exercise_1() {
+	int a = 0, b = 0;
+	cout << "Введите 2 числа: ";
+	//scanf ("%d", &a, &b);
+	cin >> a >> b;
+	if (a == 0 || b == 0)
+		cout << "Введите корректное значение" << "\n";
+	else
+		cout << "Ответ: " << Evklid(abs(a), abs(b));
+}    // Алг Евклида
+bool checkSimple(int x) {
+	for (size_t i = 2; i <= sqrt(x);++i) {
+		if (x % i == 0) {
+			return false;
+		}
+	}
+	return true;
+}
+
+void exercise_2() {
+	int n;
+	int_vector array, result;
+	cout << "Введите число:  ";
+	cin >> n;
+	array.push_back(n);
+
+	for (size_t i = 2; i <= n; i++) { //size_t = 8 byte= 2**64 int = 4 byte for example == 2**32 , and size_t = unsigned type;
+		result.push_back(i);
+	}
+
+	bool isPrimeFound = false; // флаг для отслеживания нашли ли мы простое число
+	for (size_t i = 0; i < result.size(); ++i) {
+		if (checkSimple(result[i]) && result[i] != 0 && result[i] != 1) {
+			if (!isPrimeFound) {
+				cout << "Вывод: "; // Выводим "вывод" только если нашли простое число
+				isPrimeFound = true; // Устанавливаем флаг в true, так как мы нашли простое число
+			}
+			cout << result[i] << " "; // Затем выводим само простое число
+		}
+	}
+}	// «Решето Эратосфена»
+// explore void (*pEx)(type) = function or &function (its equality)
+bool sortirovka_for_vector(const string s1, const string s2) {
+	for (size_t i = 0; i < s1.length() && i < s2.length(); ++i) {
+		char c1 = tolower(s1[i]);
+		char c2 = tolower(s2[i]);
+		if (c1 != c2)
+			return c1 < c2;
+	}
+	return s1.length() < s2.length();
+}
+bool sortirovka_string(char a, char b)
+{
+	if (tolower(a) == tolower(b))
+	{
+		return a < b;
+	}
+	return tolower(a) < tolower(b);
+}
+void exercise_3_17() { // 17
+	/*string str;
+	vector<string> input;
+	cout << "Введите текст: ";
+	cin.ignore(); // очищаем буфер ввода
+	getline(cin, str);
+	input.push_back(str);
+
+	ofstream inputFile("text.txt");
+	if (inputFile.is_open()) { // if input file doesnt open
+		inputFile << str;
+		inputFile.close();
+	}
+	else {
+		cout << "Ошибка!" << endl;
+	}
+	string vstr;
+	ifstream infile;
+	infile.open("text.txt");
+			getline(infile, vstr);
+
+	sort(input.begin(), input.end(), caseInsensitiveCompare);
+	for (size_t i = 0; i < input.size(); ++i) {
+		input.push_back(vstr)	;
+			}
+	*/
+	string input;
+	cout << "Введите текст: ";
+	cin.ignore(); // очищаем буфер ввода
+	getline(cin, input);
+
+	ofstream inputFile("text.txt");
+	if (inputFile.is_open()) {
+		inputFile << input;
+		inputFile.close();
+	}
+	else
+	{
+		cout << "Ошибка" << endl;
+	}
+	
+	string s;
+
+	ifstream infile;
+	infile.open("text.txt");
+	getline(infile, s);
+	
+	sort(s.begin(), s.end(), sortirovka_string);
+	cout << "Отсортированные буквы: " << s << endl;
+	
+	ofstream outfile;
+	outfile.open("sort.txt");
+	outfile << s;
+	outfile.close();
+}
+/*string getConsonants(const std::string& str) {
+	string consonants;
+	for (char c : str) {
+		if (isalpha(c) && strchr("BCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz", c)) {
+			consonants += c;
+		}
+	}
+	return consonants;
+}*/
+void exercise_3_24() {
+	// 1 сначала ввожу текст; 2 записываю в файл; 3 сортирую текст; 4 записываю сортированные текст в файл НАИМЕНЕЕ ЧАСТОГО ВСТРЕЧАЮЩЕГОСЯ и вывожу
+	string input;
+	cout << "Введите текст: ";
+	cin.ignore();
+	getline(cin,input); 
+
+	ofstream inputFile("text.txt");
+	if (inputFile.is_open()) {
+		inputFile << input;
+		inputFile.close();
+	}
+	else
+	{
+		cout << "Ошибка" << endl;
+	}	
+	string s;
+
+	ifstream infile;
+	infile.open("text.txt");
+	getline(infile, s);
+	cout << "Отсортированные буквы: " << s << endl;
+
+	ofstream outfile;
+	outfile.open("sort.txt");
+	outfile << s;
+	outfile.close();
+	// string dictionary = {}
+}
+string dec_to_new_x(int x2d_res, int n_new_sys) // от пользователя нужно только система счисления. из 10 в x. x2d_res = x to dec result, берётся из задания
+{
+	string result;
+	while (x2d_res > 0) {
+		int rem = x2d_res % n_new_sys;
+		result = dict_16CC[rem] + result;
+		x2d_res /= n_new_sys;
+	}
+	return result;
+}
+int x_to_dec(string num, int sys) {
+
+	int result = 0;
+	int len = num.size();
+	for (int i = 0; i < len; i++) {
+		char c = num[i];
+		int value = dict_16CC.find(toupper(c));
+		result += value * pow(sys, len - i - 1);
+	}
+	return result;
+}
+int СС7_in_3CC()
+{
+	int num_in2{}, result{}, tracker = 0;
+	bool alert = false;
+	string temp, num, tempf;
+	string arraytemp[2000]{};
+	for (size_t j = 0; j< 2000; ++j)
+	{
+		printf	("-> "); std::cin >> num; printf("\n");		
+
+		if (num == "0")
+		{
+			break;
+		}
+		for ( size_t i =0; i < num.length(); ++i)
+		{
+			if (num[i] <= 'f' && num[i] >= '7')
+			{
+				alert = true;
+				cout << "Ошибка!" << endl;
+				return 0;
+			}
+		}
+		arraytemp[j] = num;
+		tracker++;
+	}
+	string* array5 = new string[tracker];
+	int* array2 = new int[tracker];
+	for (int i = 0; i < tracker; i++)
+	{
+		array5[i] = arraytemp[i];
+	}
+
+	for (int i = 0; i < tracker; i++)
+	{
+		temp = array5[i];
+		num_in2 = x_to_dec(temp, 7);
+		tempf = dec_to_new_x(num_in2, 3);
+		result = stoi(tempf); // stoi преобразует последовательность символов в str в значение типа int и возвращает значение
+		array2[i] = result;
+	}
+	printf("Code result\n");
+	for (int i = 0; i < tracker; i++)
+	{
+		std::cout << array2[i] << "\n";
+	}
+	delete[] array5; delete[] array2;
+	return 0;
+}
+
+void exercise_4_24() {
+	string num;
+	bool alert = false;
+	cout << "Введите число, которое вы хотите переконвертировать. ПОСЛЕ ВВЕДЕНИЯ НАПИШИТЕ 0 ";
+	СС7_in_3CC();
+}
+
+void exercise_4_36() {
+	string S;
+	cin.ignore();
+	getline(cin, S);
+
+	int shortestLength = INT_MAX; // if самое короткое слово имеет наибольшую возможную длину
+
+	int currentLength = 0;
+	for (size_t i = 0; i<S.length(); ++i) { // 	for (char c : S) итераторы изучить потом
+
+		//if (c != ' ') if{
+		if (S[i] != ' ')
+			currentLength++; // Увеличиваем длину текущего слова
+		
+		else {
+			if (currentLength < shortestLength) {
+				shortestLength = currentLength; // Обновляем длину самого короткого слова
+				currentLength = 0; // Сбрасываем длину текущего слова
+			}
+		}
+	}
+
+	// Если последнее слово является самым коротким
+	if (currentLength < shortestLength) {
+		shortestLength = currentLength;
+	}
+	cout << "Длина самого короткого слова: " << shortestLength << endl;
+}
+
+bool compareCountries(const pair<string, vector<int>>& a, const pair<string, vector<int>>& b) {
+	return a.first < b.first;
+}
+void exercise_5_24() {
+	vector<pair<string, vector<int>>> countries;
+	int num_countries;
+
+	cout << "Введите количество стран: ";
+	cin >> num_countries;
+	if (num_countries < 1 || num_countries > 20) {
+		cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+			return;
+	}
+	for (int i = 0; i < num_countries; i++) {
+		string country_name;
+		vector<int> medals(3); // Вектор для хранения количества медалей (золотые, серебряные, бронзовые)
+
+		//cout << "Введите название страны: ";
+		/*cin >> */country_name="";
+		//cout << "Введите количество золотых медалей: ";
+		/*cin >>*/ medals[0]=0;
+		//cout << "Введите количество серебряных медалей: ";
+		/*cin >>*/ medals[1]=1;
+		//cout << "Введите количество бронзовых медалей: ";
+		/*cin >>*/ medals[2]=2;
+
+		countries.push_back({ country_name, medals });
+	}
+
+	sort(countries.begin(), countries.end(), compareCountries); // СТРАНЫ НЕ ПИШУТСЯ С СТРОЧНЫХ БУКВ ПОЭТОМУ СОРТИРОВАТЬ ПО РЕГИСТРУ НЕЛЬЗЯ :)))))))))))
+
+	ofstream outfile("olympic_results.txt");
+	if (outfile.is_open()) {
+		for (const auto& country : countries) {
+			int total_medals = country.second[0] + country.second[1] + country.second[2];
+			int total_points = (country.second[0] * 7) + (country.second[1] * 6) + (country.second[2] * 5);
+
+			outfile << "Страна: " << country.first << endl;
+			outfile << "Золотые медали: " << country.second[0] << endl;
+			outfile << "Серебряные медали: " << country.second[1] << endl;
+			outfile << "Бронзовые медали: " << country.second[2] << endl;
+			outfile << "Общее количество медалей: " << total_medals << endl;
+			outfile << "Общее количество очков: " << total_points << endl;
+			outfile << endl;
+		}
+
+		outfile.close();
+		cout << "Итоги Олимпийских игр сохранены в файле 'olympic_results.txt'" << endl;
+	}
+	else {
+		cout << "Не удалось открыть файл для записи" << endl;
+	}
+}
+void exercise_5_51()
+{
+	const int MAX_ROWS = 10;
+	const int MAX_COLS = 10;
+	int arr[MAX_ROWS][MAX_COLS];
+	int numRows, numCols;
+
+	cout << "Введите количество строк и столбцов (не более " << MAX_ROWS << "): ";
+	cin >> numRows >> numCols;
+
+	// Ввод массива
+	cout << "Введите элементы массива:\n";
+	for (int i = 0; i < numRows; i++) {
+		for (int j = 0; j < numCols; j++) {
+			cout << "arr[" << i << "][" << j << "]: ";
+			cin >> arr[i][j];
+		}
+	}
+
+	// Вычисление суммы элементов по строкам
+	for (int i = 0; i < numRows; i++) {
+		int sum = 0;
+		for (int j = 0; j < numCols; j++) {
+			sum += arr[i][j];
+		}
+		cout << "Сумма элементов в строке " << i << ": " << sum << endl;
+	}
+}
+
+
+int main() {
+
+	setlocale(LC_ALL, "Russian");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(handle, FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
+	unsigned number;
+	bool run = true;
+	cout << "Какое задание запустить ? \n "
+		<< "Мне лень переписывать все 8 заданий, поэтому введите число от 1 до 8, чтобы запустить скрипт:  ";
+	while (run)
+	{
+
+		run = false;
+		cin >> number;
+		/* if (!std::cin >> number)
+		{
+			std::cin.clear(); // как работает читать!!!!!!!!!!!!!!!!!!!!
+		}
+		*/
+		switch (number)
+		{
+		case 1:
+		exercise_1();
+			break;
+		case 2:
+			exercise_2();
+			break;
+		case 3:
+			exercise_3_17();
+			break;
+		case 4: 
+			exercise_3_24();
+			break;
+		case 5:
+			exercise_4_24();
+			break;
+		case 6:
+			exercise_4_36();
+			break;
+		case 7:
+			exercise_5_24();
+			break;
+		case 8:
+			exercise_5_51();
+			break;
+		default:
+			cout << "Введите корректное значение: ";
+			run = true;
+		}
+	}
+	return 0;
+
+}
